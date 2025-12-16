@@ -1190,6 +1190,211 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 480px;
+            padding: 40px;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 107, 53, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            direction: rtl;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.15);
+        }
+
+        .form-input:invalid:not(:placeholder-shown) {
+            border-color: var(--accent);
+        }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .form-note {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-success {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .form-success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 24px;
+            animation: successPulse 0.5s ease;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .form-success h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .form-success p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            right: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            .modal {
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1205,7 +1410,7 @@
             <span class="nav-logo-icon">🚀</span>
             <span>سیاوش اکسپرینس</span>
         </a>
-        <a href="#pricing" class="nav-cta">ثبت‌نام در دوره</a>
+        <a href="javascript:void(0)" onclick="openModal()" class="nav-cta">ثبت‌نام در دوره</a>
     </nav>
 
     <!-- Hero Section -->
@@ -1233,7 +1438,7 @@
                         </div>
                     </div>
                     <div class="hero-cta-group">
-                        <a href="#pricing" class="btn btn-primary">
+                        <a href="javascript:void(0)" onclick="openModal()" class="btn btn-primary">
                             <span>همین الان شروع کن</span>
                             <span>←</span>
                         </a>
@@ -1526,7 +1731,7 @@
                     <li>دسترسی به گروه پشتیبانی</li>
                     <li>گواهی پایان دوره</li>
                 </ul>
-                <a href="#" class="btn btn-primary pricing-cta">
+                <a href="javascript:void(0)" onclick="openModal()" class="btn btn-primary pricing-cta">
                     <span>ثبت‌نام در دوره</span>
                     <span>←</span>
                 </a>
@@ -1593,7 +1798,7 @@
                     <h2 class="cta-title">آماده‌ای زندگیت رو تغییر بدی؟</h2>
                     <p class="cta-subtitle">همین الان اولین قدم رو بردار و به جمع کارآفرینان دیجیتال بپیوند</p>
                     <div class="cta-buttons">
-                        <a href="#pricing" class="btn btn-primary">
+                        <a href="javascript:void(0)" onclick="openModal()" class="btn btn-primary">
                             <span>شروع می‌کنم</span>
                             <span>←</span>
                         </a>
@@ -1619,15 +1824,162 @@
         </div>
     </footer>
 
+    <!-- Registration Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal glass glass-strong">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+
+            <div id="registerForm">
+                <div class="modal-header">
+                    <div class="modal-icon">📝</div>
+                    <h3 class="modal-title">ثبت‌نام در دوره</h3>
+                    <p class="modal-subtitle">اطلاعاتت رو وارد کن تا باهات هماهنگ کنیم</p>
+                </div>
+
+                <form id="registrationForm" onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label class="form-label">نام و نام خانوادگی *</label>
+                        <input type="text" class="form-input" name="name" placeholder="مثال: علی محمدی" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">شماره موبایل *</label>
+                        <input type="tel" class="form-input" name="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required
+                               pattern="^09[0-9]{9}$" title="شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">ایمیل *</label>
+                        <input type="email" class="form-input" name="email" placeholder="example@gmail.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">از کجا با ما آشنا شدی؟</label>
+                        <input type="text" class="form-input" name="source" placeholder="اینستاگرام، یوتیوب، معرفی دوستان...">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+                        <span>ثبت درخواست</span>
+                        <span>←</span>
+                    </button>
+                </form>
+
+                <p class="form-note">🔒 اطلاعات شما نزد ما محفوظ است</p>
+            </div>
+
+            <div id="successMessage" class="form-success" style="display: none;">
+                <div class="form-success-icon">✓</div>
+                <h3>ثبت‌نام با موفقیت انجام شد!</h3>
+                <p>ممنون از ثبت‌نامت! 🎉<br>به زودی باهات تماس می‌گیریم و هماهنگی‌های لازم رو انجام می‌دیم.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // =============================================
+        // GOOGLE SHEETS CONFIGURATION
+        // =============================================
+        // Replace this URL with your Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+
+        // =============================================
+        // MODAL FUNCTIONS
+        // =============================================
+        function openModal() {
+            document.getElementById('registerModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('registerModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('registerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // =============================================
+        // FORM SUBMISSION
+        // =============================================
+        async function submitForm(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(form);
+
+            // Show loading state
+            submitBtn.classList.add('btn-loading');
+            submitBtn.querySelector('span:first-child').textContent = 'در حال ارسال...';
+
+            // Prepare data
+            const data = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                source: formData.get('source') || '-',
+                timestamp: new Date().toLocaleString('fa-IR')
+            };
+
+            try {
+                // Send to Google Sheets
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                // Show success message
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+
+                // Reset form
+                form.reset();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('متاسفانه مشکلی پیش آمد. لطفاً دوباره تلاش کنید.');
+            } finally {
+                // Reset button state
+                submitBtn.classList.remove('btn-loading');
+                submitBtn.querySelector('span:first-child').textContent = 'ثبت درخواست';
+            }
+        }
+
+        // Reset modal when closed
+        document.getElementById('registerModal').addEventListener('transitionend', function(e) {
+            if (!this.classList.contains('active') && e.propertyName === 'opacity') {
+                document.getElementById('registerForm').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        });
+
+        // =============================================
         // FAQ Toggle
+        // =============================================
         document.querySelectorAll('.faq-item').forEach(item => {
             item.addEventListener('click', () => {
                 item.classList.toggle('active');
             });
         });
 
+        // =============================================
         // Scroll Animation
+        // =============================================
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1643,7 +1995,9 @@
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+        // =============================================
         // Smooth scroll for anchor links
+        // =============================================
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1657,7 +2011,9 @@
             });
         });
 
+        // =============================================
         // Parallax effect for orbs
+        // =============================================
         window.addEventListener('mousemove', (e) => {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
